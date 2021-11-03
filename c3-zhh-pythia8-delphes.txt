@@ -1,0 +1,14 @@
+import model sm
+generate e+ e- > z h h
+output c3-zhh-pythia8-delphes
+launch
+shower=Pythia8
+detector=Delphes
+set mh 125.0
+set wh 0.004
+set ebeam1 275.
+set ebeam2 275.
+set polbeam1 0.00
+set polbeam2 80.0
+set nevents 1000
+set iseed 1823211
