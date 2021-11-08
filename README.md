@@ -2,7 +2,7 @@
 First time only
 
 ```
-export basedir=/nfs_scratch/$USER/`date +%Y-%m-%d`
+if [ -d '/nfs_scratch' ]; then export basedir=/nfs_scratch/$USER/`date +%Y-%m-%d`; else basedir=$PWD/`date +%Y-%m-%d`; fi
 mkdir -p $basedir
 cd $basedir
 git clone https://github.com/SridharaDasu/C3-Delphes-Studies.git
@@ -14,7 +14,8 @@ wget https://launchpad.net/mg5amcnlo/3.0/3.2.x/+download/MG5_aMC_v3.2.0.tar.gz
 tar zxf MG5_aMC_v3.2.0.tar.gz 
 export mg5dir=$workdir/MG5_aMC_v3_2_0/
 cd $mg5dir
-source /cvmfs/sft.cern.ch/lcg/views/LCG_97a/x86_64-centos7-gcc8-opt/setup.sh 
+if [ -d '/cvmfs' ]; then source /cvmfs/sft.cern.ch/lcg/views/LCG_97a/x86_64-centos7-gcc8-opt/setup.sh; fi
+if [ `uname` == 'Darwin' ]; then echo export MACOSX_DEPLOYMENT_TARGET=10.15; fi
 python $mg5dir/bin/mg5_aMC
 ```
 
@@ -25,6 +26,15 @@ Optionally, you can track the log files in the secondary login window, if you wi
       install pythia8
       install Delphes
       exit
+```
+
+On relogin cd to the base directory, i.e., the directory with the date of creation above, e.g., /Users/dasu/2021-11-03/
+
+```
+export basedir=$PWD
+export workdir=$basedir/C3-Delphes-Studies
+export datadir=$workdir/data
+export mg5dir=$workdir/MG5_aMC_v3_2_0/
 ```
 
 To produce data use  .txt files with different configurations
