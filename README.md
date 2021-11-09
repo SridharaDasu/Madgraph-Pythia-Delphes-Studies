@@ -41,7 +41,7 @@ To produce data use  .txt files with different configurations
 
 ```
 cd $datadir
-source /cvmfs/sft.cern.ch/lcg/views/LCG_97a/x86_64-centos7-gcc8-opt/setup.sh
+if [ -d '/cvmfs' ]; then source /cvmfs/sft.cern.ch/lcg/views/LCG_97a/x86_64-centos7-gcc8-opt/setup.sh; fi
 export PYTHIA8DATA=$mg5dir/HEPTools/pythia8/share/Pythia8/xmldoc/
 python $mg5dir/bin/mg5_aMC $workdir/c3-zhh-pythia8-delphes.txt
 ```

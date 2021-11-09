@@ -12,9 +12,3 @@ set polbeam1 0.00
 set polbeam2 80.0
 set nevents 1000
 set iseed 1823211
-set mh 125.0
-set wh 0.004
-set ebeam1 250.
-set ebeam2 250.
-set nevents 10000
-set iseed 1823211
