@@ -28,21 +28,22 @@ Optionally, you can track the log files in the secondary login window, if you wi
       exit
 ```
 
-On relogin cd to the base directory, i.e., the directory with the date of creation above, e.g., /Users/dasu/2021-11-03/
+Whenever you logout and login, cd to the base directory, i.e., the directory with the date of creation above, e.g., /Users/dasu/2021-11-03/
 
 ```
 export basedir=$PWD
 export workdir=$basedir/C3-Delphes-Studies
 export datadir=$workdir/data
 export mg5dir=$workdir/MG5_aMC_v3_2_0/
+if [ -d '/cvmfs' ]; then source /cvmfs/sft.cern.ch/lcg/views/LCG_97a/x86_64-centos7-gcc8-opt/setup.sh; fi
+export PYTHIA8DATA=$mg5dir/HEPTools/pythia8/share/Pythia8/xmldoc/
+source $mg5dir/Delphes/DelphesEnv.sh 
 ```
 
 To produce data use  .txt files with different configurations
 
 ```
 cd $datadir
-if [ -d '/cvmfs' ]; then source /cvmfs/sft.cern.ch/lcg/views/LCG_97a/x86_64-centos7-gcc8-opt/setup.sh; fi
-export PYTHIA8DATA=$mg5dir/HEPTools/pythia8/share/Pythia8/xmldoc/
 python $mg5dir/bin/mg5_aMC $workdir/c3-zhh-pythia8-delphes.txt
 ```
 
