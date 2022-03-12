@@ -1,0 +1,13 @@
+set run_mode 0
+import model sm
+generate p p > h j j
+output atlas-vbfh-pythia8-delphes
+launch
+shower=Pythia8
+detector=Delphes
+set mh 125.0
+set wh 0.004
+set ebeam1 6500.
+set ebeam2 6500.
+set nevents 1000
+set iseed 0

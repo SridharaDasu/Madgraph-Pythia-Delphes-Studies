@@ -1,0 +1,18 @@
+set run_mode 0
+import model sm
+generate mu+ mu- > vm vm~ b b~ h
+output bkgvvbbh_10TeV
+launch
+shower=Pythia8
+detector=Delphes
+set mh 125.0
+set wh 0.004
+set ebeam1 5000.
+set ebeam2 5000.
+set mmjj 5.0
+set drjj 0.1
+set drbb 0.1
+set mmbb 5.0
+set nevents 100
+set iseed 0
+0

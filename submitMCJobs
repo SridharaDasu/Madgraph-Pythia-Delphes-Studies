@@ -1,0 +1,12 @@
+#!/bin/bash
+
+runWiscJobs.py \
+  --WorkFlow $1 \
+  --Executable=runMG5JobOnWorker.sh \
+  --Arguments=$1.txt \
+  --nJobs=100 \
+  --TransferInputFile=/nfs_scratch/dasu/CentOS7/MyMG5Dir.tar.gz,CustomMuonCollider.tar.gz,$1.txt \
+  --OutputDir=/nfs_scratch/$USER \
+  --HDFSProdDir None \
+  --Experiment mucol \
+  --MemoryRequirements 2048
