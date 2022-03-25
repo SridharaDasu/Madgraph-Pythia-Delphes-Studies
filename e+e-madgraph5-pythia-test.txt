@@ -1,0 +1,11 @@
+import model sm
+define f = e- mu- ta- ve vm vt u c d s b
+define f~ = e+ mu+ ta+ ve~ vm~ vt~ u~ c~ d~ s~ b~
+generate e+ e- > f f~
+output e+e-madgraph5-pythia-test
+launch
+shower=Pythia8
+set ebeam1 125.
+set ebeam2 125.
+set nevents 1000
+set iseed 1823211

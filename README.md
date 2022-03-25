@@ -12,6 +12,29 @@ Code installation instructions:
 
 First time only
 
+If you wish to install on your local system, you may want to skip Delphes first and check that Madgraph5 + Pythia are installed correctly. Here are just those steps:
+
+```
+wget https://launchpad.net/mg5amcnlo/3.0/3.2.x/+download/MG5_aMC_v3.2.0.tar.gz
+tar zxf MG5_aMC_v3.2.0.tar.gz 
+export mg5dir=$PWD/MG5_aMC_v3_2_0/
+python $mg5dir/bin/mg5_aMC
+```
+
+follow up by:
+
+```
+install lhapdf6
+install pythia8
+exit
+```
+
+you can then test your setup using:
+
+```
+python $mg5dir/bin/mg5_aMC e+e-madgraph5-pythia-test.txt
+```
+
 If you are on machines with /cvmfs and CentOS7 (login.hep.wisc.edu), you may use ROOT from there:
 
 ```
