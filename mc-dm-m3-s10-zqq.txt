@@ -1,0 +1,18 @@
+import model sm
+set auto_convert_model T
+import model f2d_n-plet_UFO
+define q = u c d s b
+define q~ = u~ c~ d~ s~ b~
+generate mu+ mu- > chin chin~ z, z > q q~
+output mc-dm-m3-s10-zqq
+launch
+shower=Pythia8
+detector=Delphes
+set mh 125.0
+set wh 0.004
+set mpsi 3000.0
+set ebeam1 5000.
+set ebeam2 5000.
+set nevents 100000
+set iseed 0
+0

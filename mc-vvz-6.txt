@@ -1,0 +1,13 @@
+import model sm
+generate mu+ mu- > vl vl~ z, z > l+ l-
+output vvzll-6TeV
+launch
+shower=Pythia8
+detector=Delphes
+set mh 125.0
+set wh 0.004
+set ebeam1 3000.
+set ebeam2 3000.
+set nevents 100000
+set iseed 0
+0

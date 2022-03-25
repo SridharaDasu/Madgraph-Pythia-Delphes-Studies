@@ -9,5 +9,9 @@ set mh 125.0
 set wh 0.004
 set ebeam1 6500.
 set ebeam2 6500.
-set nevents 1000
+set nevents 10000
 set iseed 0
+set ptj 20
+set ptb 20
+set etaj 5
+set etab 3
