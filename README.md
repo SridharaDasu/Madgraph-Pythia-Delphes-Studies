@@ -84,14 +84,14 @@ Go to the dirctory where you wish to work and then install this code:
 ```
 if [ -d '/nfs_scratch' ]; then export basedir=/nfs_scratch/$USER/`date +%Y-%m-%d`; else basedir=$PWD/`date +%Y-%m-%d`; fi
 mkdir -p $basedir
-git clone git@github.com:SridharaDasu/L1TSignalZerobiasMixer.git
-source $basedir/L1TSignalZerobiasMixer/setup.sh
+git clone git@github.com:SridharaDasu/Madgraph-Pythia-Delphes-Studies.git
+source $basedir/Madgraph-Pythia-Delphes-Studies/setup.sh
 ```
 
 On relogin use the base directory, i.e., the directory with the date of creation above, e.g., /nfs_scratch/dasu/2021-11-03/
 
 ```
-source /nfs_scratch/dasu/2021-11-03/L1TSignalZerobiasMixer/setup.sh
+source /nfs_scratch/dasu/2021-11-03/Madgraph-Pythia-Delphes-Studies/setup.sh
 ```
 
 To produce signal data (root files) use  *.txt files with different configurations; If you make your own signal process files, please share by making a pull request
