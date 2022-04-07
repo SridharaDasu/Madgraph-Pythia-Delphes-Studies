@@ -15,9 +15,9 @@ First time only
 If you wish to install on your local system, you may want to skip Delphes first and check that Madgraph5 + Pythia are installed correctly. Here are just those steps:
 
 ```
-wget https://launchpad.net/mg5amcnlo/3.0/3.2.x/+download/MG5_aMC_v3.2.0.tar.gz
-tar zxf MG5_aMC_v3.2.0.tar.gz 
-export mg5dir=$PWD/MG5_aMC_v3_2_0/
+wget https://launchpad.net/mg5amcnlo/3.0/3.3.x/+download/MG5_aMC_v3.3.2.tar.gz
+tar zxf MG5_aMC_v3.3.2.tar.gz 
+export mg5dir=$PWD/MG5_aMC_v3_3_2/
 python $mg5dir/bin/mg5_aMC
 ```
 
@@ -56,9 +56,9 @@ if [ `uname` == 'Darwin' ]; then echo export MACOSX_DEPLOYMENT_TARGET=10.15; fi
 If you do not have a working Madgraph5 installation, do the following, in a directory with plenty of space:
 
 ```
-wget https://launchpad.net/mg5amcnlo/3.0/3.2.x/+download/MG5_aMC_v3.2.0.tar.gz
-tar zxf MG5_aMC_v3.2.0.tar.gz 
-export mg5dir=$PWD/MG5_aMC_v3_2_0/
+wget https://launchpad.net/mg5amcnlo/3.0/3.3.x/+download/MG5_aMC_v3.3.2.tar.gz
+tar zxf MG5_aMC_v3.3.2.tar.gz 
+export mg5dir=$PWD/MG5_aMC_v3_3_2/
 python $mg5dir/bin/mg5_aMC
 ```
 
@@ -75,8 +75,8 @@ exit
 If you do have a Madgraph5 directory and tar.gz file already setup:
 
 ```
-export mg5dir=<your MG5_aMC_v3_2_0 directory>
-export mg5tar=<your MG5_aMC_v3_2_0 tar.gz file>
+export mg5dir=<your MG5_aMC_v3_3_2 directory>
+export mg5tar=<your MG5_aMC_v3_3_2 tar.gz file>
 ```
 
 Go to the dirctory where you wish to work and then install this code:
@@ -99,20 +99,6 @@ To produce signal data (root files) use  *.txt files with different configuratio
 ```
 cd $datadir
 python $mg5dir/bin/mg5_aMC $workdir/cms-vbfh-pythia8-delphes.txt
-```
-
-With above .txt file the event files will be in the directory $datadir/cms-vbfh-pythia8-delphes/run_01/
-
-There should now be a root file in your directory $datadir/cms-vbfh-pythia8-delphes/Events/run_01/tag_1_delphes_events.root
-
-We use root to read this data, and the CSV file from the zerobias run (https://github.com/SridharaDasu/L1TRegionDumper) to produce the final file:
-
-```
-export SIGNAL_ROOT_FILE=$datadir/cms-vbfh-pythia8-delphes/Events/run_01/tag_1_delphes_events.root
-export ZEROBIAS_CSV_FILE=/nfs_scratch/dasu/2022-01/CMSSW_11_1_9/src/L1Trigger/L1TRegionDumper/test/L1TRegionDump.csv
-export OUTPUT_CSV_FILE="$datadir/cms-vbfh.csv"
-cd $workdir
-root -l -q L1TSignalZerobiasMixer.C\(\"$SIGNAL_ROOT_FILE\"\,\"$ZEROBIAS_CSV_FILE\"\,\"$OUTPUT_CSV_FILE\"\)
 ```
 
 Command to run Madgraph on the UW cluster:
