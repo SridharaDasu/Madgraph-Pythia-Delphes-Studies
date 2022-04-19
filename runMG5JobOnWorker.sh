@@ -23,7 +23,7 @@ export PYTHIA8DATA=$mg5dir/HEPTools/pythia8/share/Pythia8/xmldoc
 export LHAPDF_DATA_PATH=$mg5dir/HEPTools/lhapdf6_py3/share/LHAPDF
 source $mg5dir/Delphes/DelphesEnv.sh
 export workdir=$PWD
-if [ "$MyRandomNumber" == "" ]; then export MyRandomNumber=`date +"%-N"`; fi
+if [ "$MyRandomNumber" == "" ]; then export MyRandomNumber=`date +"%8N"`; fi
 export datadir=$MyRandomNumber
 echo "Using ROOTSYS=$ROOTSYS"
 echo "Using mg5dir=$mg5dir"
