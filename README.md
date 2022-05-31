@@ -10,6 +10,19 @@ The inputs are madgraph, pythia8 and Delphes control files for the signal root f
 
 Code installation instructions:
 
+If you are working on login.hep.wisc.edu, you can use my existing madgraph. If so, follow this set:
+
+```
+export mg5dir=/nfs_scratch/dasu/CentOS7/MG5_aMC_v3_2_0/
+if [ -d '/nfs_scratch' ]; then export basedir=/nfs_scratch/$USER/`date +%Y-%m-%d`; else basedir=$PWD/`date +%Y-%m-%d`; fi
+mkdir -p $basedir
+git clone git@github.com:SridharaDasu/Madgraph-Pythia-Delphes-Studies.git
+source $basedir/Madgraph-Pythia-Delphes-Studies/setup.sh
+```
+
+
+If you wish to work on login.hep.wisc.edu, but use your own madgraph you need to install as below:
+
 First time only
 
 If you wish to install on your local system, you may want to skip Delphes first and check that Madgraph5 + Pythia are installed correctly. Here are just those steps:
