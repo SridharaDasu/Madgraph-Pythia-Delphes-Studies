@@ -1,0 +1,12 @@
+import model HAHM_variableMW_v3_UFO
+generate e+ e- > z h , (h > h2 h2, h2 > b b~, h2 > ta+ ta-)
+output c3-zh-aa-bbtautau
+launch
+shower=Pythia8
+detector=Delphes
+set ebeam1 125.
+set ebeam2 125.
+set polbeam1 0.00
+set polbeam2 80.0
+set nevents 100000
+set iseed 1823211

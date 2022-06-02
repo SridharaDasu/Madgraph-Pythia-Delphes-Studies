@@ -1,6 +1,8 @@
 import model sm
-generate mu+ mu- > b b~ b b~
-output bkg_bbbb_3TeV
+define q = u d s c b t
+define q~ = u~ d~ s~ c~ b~ t~
+generate mu+ mu- > q q~ q q~
+output bkg_qqqq_3TeV
 launch
 shower=Pythia8
 detector=Delphes
