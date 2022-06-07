@@ -4,12 +4,16 @@ if [ -d '/cvmfs' ]; then
         source /cvmfs/sft.cern.ch/lcg/views/LCG_101/x86_64-centos7-gcc11-opt/setup.sh
         if [ -d "/nfs_scratch/$USER/CentOS7/MG5_aMC_v3_2_0" ]; then
             export mg5dir=/nfs_scratch/$USER/CentOS7/MG5_aMC_v3_2_0/
+        else
+            export mg5dir=/nfs_scratch/dasu/CentOS7/MG5_aMC_v3_2_0/
 	fi
     elif [[ `uname -r` == *"el8"* ]]; then
         source /cvmfs/sft.cern.ch/lcg/views/LCG_101/x86_64-centos8-gcc11-opt/setup.sh
         if [ -d "/nfs_scratch/$USER/CentOS8/MG5_aMC_v3_2_0" ]; then
             export mg5dir=/nfs_scratch/$USER/CentOS8/MG5_aMC_v3_2_0/
-	fi
+      	else
+	    export mg5dir=/nfs_scratch/dasu/CentOS8/MG5_aMC_v3_2_0/
+        fi
     fi
 fi
 if [ -d "$ROOTSYS" ]; then
