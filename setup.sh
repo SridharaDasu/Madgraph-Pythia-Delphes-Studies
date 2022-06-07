@@ -23,8 +23,8 @@ if [ -d "$mg5dir" ]; then
 else
     echo "Madgraph is needed for this to work - export mg5dir=... and rerun";
 fi
-export PYTHIA8DATA=`$mg5dir/HEPTools/bin/pythia8-config --xmldoc`
-export LHAPDF_DATA_PATH=`$mg5dir/HEPTools/bin/lhapdf-config --datadir`
+export PYTHIA8DATA=`$mg5dir/HEPTools/pythia8/bin/pythia8-config --xmldoc`
+export LHAPDF_DATA_PATH=`$mg5dir/HEPTools/lhapdf6_py3/bin/lhapdf-config --datadir`
 source $mg5dir/Delphes/DelphesEnv.sh
 export workdir=`dirname -- "${BASH_SOURCE[0]}"`
 export basedir=`dirname $workdir`;
