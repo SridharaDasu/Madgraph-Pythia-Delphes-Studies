@@ -23,6 +23,7 @@ source $basedir/Madgraph-Pythia-Delphes-Studies/setup.sh
 
 ### Setup of test data (On first login only):
 ```
+mkdir $workdir/c3-zh-aa-bbtautau-analysis
 cd $workdir/c3-zh-aa-bbtautau-analysis
 ln -s /nfs_scratch/dasu/2022-03-07/Madgraph-Pythia-Delphes-Studies/c3-zh-aa-bbtautau-data/tag_1_delphes_events.root c3-zh-aa-bbtautau.root
 ```
