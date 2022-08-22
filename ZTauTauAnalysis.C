@@ -87,10 +87,30 @@ void ZTauTauAnalysis(const char *inputFile)
   histograms.Define("WrgEtaRes", "Wrongly matched tau reco vs vis Eta resolution", 100, -1.0, 1.0);
   histograms.Define("WrgPhiRes", "Wrongly matched tau reco vs vis Phi resolution", 100, -1.0, 1.0);
 
-  histograms.Define("TauPairMass", "Visible oppositely charged tau-pair Mass", 100, 0.0, 200.0);
-  histograms.Define("TauPairPT", "Visible oppositely charged tau-pair P_{T}", 100, 0.0, 100.0);
-  histograms.Define("TauPairEta", "Visible oppositely charged tau-pair eta", 100, 0.0, 10.0);
-  histograms.Define("TauPairPhi", "Visible oppositely charged tau-pair phi", 100, -7.0, 7.0);
+  histograms.Define("GenTauPairMass", "Generator-level oppositely charged tau-pair Mass", 100, 0.0, 200.0);
+  histograms.Define("GenTauPairPT", "Generator-level oppositely charged tau-pair P_{T}", 100, 0.0, 100.0);
+  histograms.Define("GenTauPairEta", "Generator-level oppositely charged tau-pair eta", 100, 0.0, 10.0);
+  histograms.Define("GenTauPairPhi", "Generator-level oppositely charged tau-pair phi", 100, -7.0, 7.0);
+
+  histograms.Define("VisTauPairMass", "Visible oppositely charged tau-pair Mass", 100, 0.0, 200.0);
+  histograms.Define("VisTauPairPT", "Visible oppositely charged tau-pair P_{T}", 100, 0.0, 100.0);
+  histograms.Define("VisTauPairEta", "Visible oppositely charged tau-pair eta", 100, 0.0, 10.0);
+  histograms.Define("VisTauPairPhi", "Visible oppositely charged tau-pair phi", 100, -7.0, 7.0);
+
+  histograms.Define("RecTauPairMass", "Visible oppositely charged tau-pair Mass", 100, 0.0, 200.0);
+  histograms.Define("RecTauPairPT", "Visible oppositely charged tau-pair P_{T}", 100, 0.0, 100.0);
+  histograms.Define("RecTauPairEta", "Visible oppositely charged tau-pair eta", 100, 0.0, 10.0);
+  histograms.Define("RecTauPairPhi", "Visible oppositely charged tau-pair phi", 100, -7.0, 7.0);
+
+  histograms.Define("MchTauPairMass", "Visible oppositely charged tau-pair Mass", 100, 0.0, 200.0);
+  histograms.Define("MchTauPairPT", "Visible oppositely charged tau-pair P_{T}", 100, 0.0, 100.0);
+  histograms.Define("MchTauPairEta", "Visible oppositely charged tau-pair eta", 100, 0.0, 10.0);
+  histograms.Define("MchTauPairPhi", "Visible oppositely charged tau-pair phi", 100, -7.0, 7.0);
+
+  histograms.Define("WrgTauPairMass", "Visible oppositely charged tau-pair Mass", 100, 0.0, 200.0);
+  histograms.Define("WrgTauPairPT", "Visible oppositely charged tau-pair P_{T}", 100, 0.0, 100.0);
+  histograms.Define("WrgTauPairEta", "Visible oppositely charged tau-pair eta", 100, 0.0, 10.0);
+  histograms.Define("WrgTauPairPhi", "Visible oppositely charged tau-pair phi", 100, -7.0, 7.0);
 
   vector<Tau> genTaus;
   vector<Tau> visTaus;
@@ -115,6 +135,26 @@ void ZTauTauAnalysis(const char *inputFile)
 	histograms.Fill("MxTTauPT", genTaus[i].MaxTrackP4.Pt());
 	histograms.Fill("TFrTauPT", genTaus[i].MaxTrackP4.Pt() / genTaus[i].P4.Pt());
 	histograms.Fill("VisTauPT", visTaus[i].P4.Pt());
+	for (int i2 = i + 1; i2 < genTaus.size(); i2++) {
+	  Tau &genTau = genTaus[i];
+	  Tau &genTau2 = genTaus[i2];
+	  if (genTau.charge * genTau2.charge == -1) { // Oppositely charged tau pair
+	    TLorentzVector tauPair = genTau.P4 + genTau2.P4;
+	    histograms.Fill("GenTauPairMass", tauPair.M());
+	    histograms.Fill("GenTauPairPT", tauPair.Pt());
+	    histograms.Fill("GenTauPairEta", tauPair.Eta());
+	    histograms.Fill("GenTauPairPhi", tauPair.Phi());
+	  }
+	  Tau &visTau = visTaus[i];
+	  Tau &visTau2 = visTaus[i2];
+	  if (visTau.charge * visTau2.charge == -1) { // Oppositely charged tau pair
+	    TLorentzVector tauPair = visTau.P4 + visTau2.P4;
+	    histograms.Fill("VisTauPairMass", tauPair.M());
+	    histograms.Fill("VisTauPairPT", tauPair.Pt());
+	    histograms.Fill("VisTauPairEta", tauPair.Eta());
+	    histograms.Fill("VisTauPairPhi", tauPair.Phi());
+	  }
+	}
       }
     }
     
@@ -139,10 +179,10 @@ void ZTauTauAnalysis(const char *inputFile)
 	  if (recTau2.nProngs != 1 && recTau2.nProngs != 3) continue;
 	  if (recTau.charge * recTau2.charge == -1) { // Oppositely charged tau pair
 	    TLorentzVector tauPair = recTau.P4 + recTau2.P4;
-	    histograms.Fill("TauPairMass", tauPair.M());
-	    histograms.Fill("TauPairPT", tauPair.Pt());
-	    histograms.Fill("TauPairEta", tauPair.Eta());
-	    histograms.Fill("TauPairPhi", tauPair.Phi());
+	    histograms.Fill("RecTauPairMass", tauPair.M());
+	    histograms.Fill("RecTauPairPT", tauPair.Pt());
+	    histograms.Fill("RecTauPairEta", tauPair.Eta());
+	    histograms.Fill("RecTauPairPhi", tauPair.Phi());
 	  }
 	}
       }
@@ -163,6 +203,25 @@ void ZTauTauAnalysis(const char *inputFile)
 	  histograms.Fill("MchPTRes", (recTau.P4.Pt() - visTau.P4.Pt()) / visTau.P4.Pt());
 	  histograms.Fill("MchEtaRes", (recTau.P4.Eta() - visTau.P4.Eta()) / visTau.P4.Eta());
 	  histograms.Fill("MchPhiRes", (recTau.P4.Phi() - visTau.P4.Phi()) / visTau.P4.Phi());
+	  for (int m2 = m + 1; m2 < mchTaus.size(); m2++) {
+	    Tau &visTau2 = mchTaus[m2].first;
+	    Tau &recTau2 = mchTaus[m2].second;
+	    if (recTau.charge * recTau2.charge == -1) { // Oppositely charged tau pair
+	      TLorentzVector tauPair = recTau.P4 + recTau2.P4;
+	      if (visTau2.charge == recTau2.charge) {
+		histograms.Fill("MchTauPairMass", tauPair.M());
+		histograms.Fill("MchTauPairPT", tauPair.Pt());
+		histograms.Fill("MchTauPairEta", tauPair.Eta());
+		histograms.Fill("MchTauPairPhi", tauPair.Phi());
+	      }
+	      else {
+		histograms.Fill("WrgTauPairMass", tauPair.M());
+		histograms.Fill("WrgTauPairPT", tauPair.Pt());
+		histograms.Fill("WrgTauPairEta", tauPair.Eta());
+		histograms.Fill("WrgTauPairPhi", tauPair.Phi());
+	      }
+	    }
+	  }
 	}
 	else {
 	  histograms.Fill("WrgTauPT", visTau.P4.Pt());
@@ -174,6 +233,16 @@ void ZTauTauAnalysis(const char *inputFile)
 	  histograms.Fill("WrgPTRes", (recTau.P4.Pt() - visTau.P4.Pt()) / visTau.P4.Pt());
 	  histograms.Fill("WrgEtaRes", (recTau.P4.Eta() - visTau.P4.Eta()) / visTau.P4.Eta());
 	  histograms.Fill("WrgPhiRes", (recTau.P4.Phi() - visTau.P4.Phi()) / visTau.P4.Phi());
+	  for (int m2 = m + 1; m2 < mchTaus.size(); m2++) {
+	    Tau &recTau2 = mchTaus[m2].second;
+	    if (recTau.charge * recTau2.charge == -1) { // Oppositely charged tau pair
+	      TLorentzVector tauPair = recTau.P4 + recTau2.P4;
+	      histograms.Fill("WrgTauPairMass", tauPair.M());
+	      histograms.Fill("WrgTauPairPT", tauPair.Pt());
+	      histograms.Fill("WrgTauPairEta", tauPair.Eta());
+	      histograms.Fill("WrgTauPairPhi", tauPair.Phi());
+	    }
+	  }
 	}
       }
     }
