@@ -1,0 +1,12 @@
+import model sm
+generate e+ e- > z h, h > ta+ ta-
+output c3-zh-h-to-tautau
+launch
+shower=Pythia8
+detector=Delphes
+set ebeam1 125.
+set ebeam2 125.
+set polbeam1 0.00
+set polbeam2 80.0
+set nevents 100000
+set iseed 1823323

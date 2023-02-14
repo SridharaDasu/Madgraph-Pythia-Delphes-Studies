@@ -1,0 +1,15 @@
+set run_mode 0
+import model sm
+define l+ = e+ mu+ ta+
+define l- = e- mu- ta-
+define vl = ve vm vt
+define vl~ = ve~ vm~ vt~
+generate p p > w+ w- z, w+ > ta+ vt, w- > ta- vt~, z > l+ l-
+output cms-multi-tau-wwz
+launch
+set mh 125.0
+set wh 0.004
+set ebeam1 6750.
+set ebeam2 6750.
+set nevents 100
+set iseed 0

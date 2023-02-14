@@ -1,0 +1,18 @@
+set run_mode 0
+import model sm
+define l+ = e+ mu+ ta+
+define l- = e- mu- ta-
+define vl = ve vm vt
+define vl~ = ve~ vm~ vt~
+generate p p > j j w+ w+, w+ > ta+ vt, w+ > ta+ vt
+add process p p > j j w- w-, w- > ta- vt~, w- > ta- vt~
+output cms-wpwpqq
+launch
+shower=Pythia8
+detector=Delphes
+set mh 125.0
+set wh 0.004
+set ebeam1 6500.
+set ebeam2 6500.
+set nevents 10000
+set iseed 0
