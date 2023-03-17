@@ -1,0 +1,27 @@
+<h2>Madgraph/Pythia/Delphes Data Generator</h2>
+<form action="action.php" method="post">
+  <label for="netid">UW Net ID:</label>
+  <input type="text" id="netid" name="netid">  <br>
+  <label for="name">Dataset name:</label>
+  <input type="text" id="name" name="name"><br>
+  <label for="commands">Madgraph Commands:</label><br>
+  <textarea id="commands" name="commands" rows="20" cols="80">
+import model sm
+define q = u d s c b t
+define q~ = u~ d~ s~ c~ b~ t~
+define l = e- mu-
+define l~ = e+ mu+
+generate e+ e- > l l~ l l~
+output e+e-To4l
+launch
+shower=Pythia8
+detector=Delphes
+set ebeam1 125.
+set ebeam2 125.
+set polbeam1 0.00
+set polbeam2 80.0
+set nevents 100000
+set iseed 1823323
+  </textarea><br>
+  <input type="submit" value="Submit">
+</form>
