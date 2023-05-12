@@ -22,7 +22,7 @@ R__LOAD_LIBRARY(libDelphes)
 #include <string>
 #include "TLorentzVector.h"
 #include "Histograms.h"
-#include "Tau.h"
+#include "TauLepton.h"
 
 using namespace std;
 
@@ -112,10 +112,10 @@ void HTauTauAnalysis(const char *inputFile)
   histograms.Define("WrgTauPairEta", "Visible oppositely charged tau-pair eta", 100, 0.0, 10.0);
   histograms.Define("WrgTauPairPhi", "Visible oppositely charged tau-pair phi", 100, -7.0, 7.0);
 
-  vector<Tau> genTaus;
-  vector<Tau> visTaus;
-  vector<Tau> recTaus;
-  vector< pair<Tau, Tau> > mchTaus;
+  vector<TauLepton> genTaus;
+  vector<TauLepton> visTaus;
+  vector<TauLepton> recTaus;
+  vector< pair<TauLepton, TauLepton> > mchTaus;
 
   cout << "Number of entries = " << numberOfEntries << endl;
 
@@ -136,8 +136,8 @@ void HTauTauAnalysis(const char *inputFile)
 	histograms.Fill("TFrTauPT", genTaus[i].MaxTrackP4.Pt() / genTaus[i].P4.Pt());
 	histograms.Fill("VisTauPT", visTaus[i].P4.Pt());
 	for (int i2 = i + 1; i2 < genTaus.size(); i2++) {
-	  Tau &genTau = genTaus[i];
-	  Tau &genTau2 = genTaus[i2];
+	  TauLepton &genTau = genTaus[i];
+	  TauLepton &genTau2 = genTaus[i2];
 	  if (genTau.charge * genTau2.charge == -1) { // Oppositely charged tau pair
 	    TLorentzVector tauPair = genTau.P4 + genTau2.P4;
 	    histograms.Fill("GenTauPairMass", tauPair.M());
@@ -145,8 +145,8 @@ void HTauTauAnalysis(const char *inputFile)
 	    histograms.Fill("GenTauPairEta", tauPair.Eta());
 	    histograms.Fill("GenTauPairPhi", tauPair.Phi());
 	  }
-	  Tau &visTau = visTaus[i];
-	  Tau &visTau2 = visTaus[i2];
+	  TauLepton &visTau = visTaus[i];
+	  TauLepton &visTau2 = visTaus[i2];
 	  if (visTau.charge * visTau2.charge == -1) { // Oppositely charged tau pair
 	    TLorentzVector tauPair = visTau.P4 + visTau2.P4;
 	    histograms.Fill("VisTauPairMass", tauPair.M());
@@ -162,7 +162,7 @@ void HTauTauAnalysis(const char *inputFile)
     
     if (makeRecTaus(branchEFTracks, branchEFPhotons, branchEFNHadrons, recTaus)) {
       for (int r = 0; r < recTaus.size(); r++) {
-	Tau &recTau = recTaus[r];
+	TauLepton &recTau = recTaus[r];
 	double deltaR = recTau.P4.DeltaR(recTau.MaxTrackP4);
 	histograms.Fill("DeltaR", deltaR);
 	histograms.Fill("RecTauMxTrkPT", recTau.MaxTrackP4.Pt());
@@ -175,7 +175,7 @@ void HTauTauAnalysis(const char *inputFile)
 	histograms.Fill("RecTauMs", recTau.P4.M());
 	if (recTau.nProngs != 1 && recTau.nProngs != 3) continue;
 	for (int r2 = r + 1; r2 < recTaus.size(); r2++) {
-	  Tau &recTau2 = recTaus[r2];
+	  TauLepton &recTau2 = recTaus[r2];
 	  if (recTau2.nProngs != 1 && recTau2.nProngs != 3) continue;
 	  if (recTau.charge * recTau2.charge == -1) { // Oppositely charged tau pair
 	    TLorentzVector tauPair = recTau.P4 + recTau2.P4;
@@ -191,8 +191,8 @@ void HTauTauAnalysis(const char *inputFile)
     // Matched taus - these should be there if the algorithm is any good
     if (makeMchTaus(visTaus, recTaus, mchTaus)) {
       for (int m = 0; m < mchTaus.size(); m++) {
-	Tau &visTau = mchTaus[m].first;
-	Tau &recTau = mchTaus[m].second;
+	TauLepton &visTau = mchTaus[m].first;
+	TauLepton &recTau = mchTaus[m].second;
 	if(visTau.charge == recTau.charge) {
 	  histograms.Fill("MchTauPT", visTau.P4.Pt());
 	  histograms.Fill("MchTauCh", recTau.charge);
@@ -204,8 +204,8 @@ void HTauTauAnalysis(const char *inputFile)
 	  histograms.Fill("MchEtaRes", (recTau.P4.Eta() - visTau.P4.Eta()) / visTau.P4.Eta());
 	  histograms.Fill("MchPhiRes", (recTau.P4.Phi() - visTau.P4.Phi()) / visTau.P4.Phi());
 	  for (int m2 = m + 1; m2 < mchTaus.size(); m2++) {
-	    Tau &visTau2 = mchTaus[m2].first;
-	    Tau &recTau2 = mchTaus[m2].second;
+	    TauLepton &visTau2 = mchTaus[m2].first;
+	    TauLepton &recTau2 = mchTaus[m2].second;
 	    if (recTau.charge * recTau2.charge == -1) { // Oppositely charged tau pair
 	      TLorentzVector tauPair = recTau.P4 + recTau2.P4;
 	      if (visTau2.charge == recTau2.charge) {
@@ -234,7 +234,7 @@ void HTauTauAnalysis(const char *inputFile)
 	  histograms.Fill("WrgEtaRes", (recTau.P4.Eta() - visTau.P4.Eta()) / visTau.P4.Eta());
 	  histograms.Fill("WrgPhiRes", (recTau.P4.Phi() - visTau.P4.Phi()) / visTau.P4.Phi());
 	  for (int m2 = m + 1; m2 < mchTaus.size(); m2++) {
-	    Tau &recTau2 = mchTaus[m2].second;
+	    TauLepton &recTau2 = mchTaus[m2].second;
 	    if (recTau.charge * recTau2.charge == -1) { // Oppositely charged tau pair
 	      TLorentzVector tauPair = recTau.P4 + recTau2.P4;
 	      histograms.Fill("WrgTauPairMass", tauPair.M());

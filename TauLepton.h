@@ -1,3 +1,5 @@
+#ifndef TauLepton__h
+#define TauLepton__h
 /*
 
   Taus object contains its P4, its highest track P4 and 
@@ -6,7 +8,7 @@
   Functions to identify generator level taus, their visible part and reconstruct
   taus using EFlow objects using Delphes objects stored in root format
 
-  #include "Tau.h" 
+  #include "TauLepton.h" 
   in your root macro to make use of Tau objects
 
 */
@@ -18,10 +20,10 @@
 
 using namespace std;
 
-class Tau {
+class TauLepton {
 public:
   // Constructor
-  Tau(TLorentzVector tauP4, TLorentzVector trackP4, int c, int nPr, int nPh, int nNH, double iso = 0.0) {
+  TauLepton(TLorentzVector tauP4, TLorentzVector trackP4, int c, int nPr, int nPh, int nNH, double iso = 0.0) {
     P4 = tauP4;
     MaxTrackP4 = trackP4;
     charge = c;
@@ -40,7 +42,7 @@ public:
   double isolation;
 };
 
-bool makeGenTaus(TClonesArray *branchParticles, vector<Tau> &genTaus, vector<Tau> &visTaus) {
+bool makeGenTaus(TClonesArray *branchParticles, vector<TauLepton> &genTaus, vector<TauLepton> &visTaus) {
   genTaus.clear();
   visTaus.clear();
   for (Int_t p = 0; p < branchParticles->GetEntries(); ++p) {
@@ -111,14 +113,14 @@ bool makeGenTaus(TClonesArray *branchParticles, vector<Tau> &genTaus, vector<Tau
 	}
       }
       int charge = tau->Charge;
-      genTaus.push_back(Tau(tau->P4(), theDaughter->P4(), charge, nProngs, nPhotons, nNHadrons));
-      visTaus.push_back(Tau((tau->P4() - particle->P4()), theDaughter->P4(), charge, nProngs, nPhotons, nNHadrons));
+      genTaus.push_back(TauLepton(tau->P4(), theDaughter->P4(), charge, nProngs, nPhotons, nNHadrons));
+      visTaus.push_back(TauLepton((tau->P4() - particle->P4()), theDaughter->P4(), charge, nProngs, nPhotons, nNHadrons));
     }
   }
   return true;
 }
 
-bool makeRecTaus(TClonesArray* branchEFTracks, TClonesArray* branchEFPhotons, TClonesArray* branchEFNHadrons, vector<Tau> &recTaus) {
+bool makeRecTaus(TClonesArray* branchEFTracks, TClonesArray* branchEFPhotons, TClonesArray* branchEFNHadrons, vector<TauLepton> &recTaus) {
   // Reconstruct taus using EFlow tracks, photons and neutral hadrons
   // Consider every charged track above 5 GeV PT - label at as a potential tau remnant
   // Add in all tracks and clusters within 0.3 of the track
@@ -198,7 +200,7 @@ bool makeRecTaus(TClonesArray* branchEFTracks, TClonesArray* branchEFPhotons, TC
       if (selected) {
 	// if (entry < 10) cout << endl << "SelRecoTau = (" << recoTau.Pt() << ", " << recoTau.Eta() << ", " << recoTau.Phi() << ", "<< recoTau.M() << ")" << endl;
 	if (nProngs <= 5) {
-	  recTaus.push_back(Tau(recoTau, track->P4(), charge, nProngs, nPhotons, nNHadrons, isolation));
+	  recTaus.push_back(TauLepton(recoTau, track->P4(), charge, nProngs, nPhotons, nNHadrons, isolation));
 	}
       } // Selected objects
     } // Those above 5 GeV
@@ -206,7 +208,7 @@ bool makeRecTaus(TClonesArray* branchEFTracks, TClonesArray* branchEFPhotons, TC
   return true;
 }
 
-bool makeMchTaus(vector<Tau> &visTaus, vector<Tau> &recTaus, vector< pair<Tau, Tau> > &mchTaus) {
+bool makeMchTaus(vector<TauLepton> &visTaus, vector<TauLepton> &recTaus, vector< pair<TauLepton, TauLepton> > &mchTaus) {
   mchTaus.clear();
   for (Int_t v = 0; v < visTaus.size(); v++) {
     // Find correct sign match
@@ -221,3 +223,4 @@ bool makeMchTaus(vector<Tau> &visTaus, vector<Tau> &recTaus, vector< pair<Tau, T
   return true;
 }
 
+#endif

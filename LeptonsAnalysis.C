@@ -23,7 +23,7 @@ R__LOAD_LIBRARY(libDelphes)
 #include <algorithm>
 #include "TLorentzVector.h"
 #include "Histograms.h"
-#include "Tau.h"
+#include "TauLepton.h"
 #include <stdlib.h>
 
 using namespace std;
@@ -113,10 +113,10 @@ void LeptonsAnalysis(const char *inputFile)
     }
   }
   
-  vector<Tau> genTaus;
-  vector<Tau> visTaus;
-  vector<Tau> recTaus;
-  vector< pair<Tau, Tau> > mchTaus;
+  vector<TauLepton> genTaus;
+  vector<TauLepton> visTaus;
+  vector<TauLepton> recTaus;
+  vector< pair<TauLepton, TauLepton> > mchTaus;
 
   cout << "Number of entries = " << numberOfEntries << endl;
 
@@ -143,7 +143,7 @@ void LeptonsAnalysis(const char *inputFile)
     
     if (makeRecTaus(branchEFTracks, branchEFPhotons, branchEFNHadrons, recTaus)) {
       for (int r = 0; r < recTaus.size(); r++) {
-	Tau &recTau = recTaus[r];
+	TauLepton &recTau = recTaus[r];
 	double deltaR = recTau.P4.DeltaR(recTau.MaxTrackP4);
 	histograms.Fill("DeltaR", deltaR);
 	histograms.Fill("RecTauMxTrkPT", recTau.MaxTrackP4.Pt());
@@ -160,8 +160,8 @@ void LeptonsAnalysis(const char *inputFile)
     // Matched taus - these should be there if the algorithm is any good
     if (makeMchTaus(visTaus, recTaus, mchTaus)) {
       for (int m = 0; m < mchTaus.size(); m++) {
-	Tau &visTau = mchTaus[m].first;
-	Tau &recTau = mchTaus[m].second;
+	TauLepton &visTau = mchTaus[m].first;
+	TauLepton &recTau = mchTaus[m].second;
 	if(visTau.charge == recTau.charge) {
 	  histograms.Fill("MchTauPT", visTau.P4.Pt());
 	  histograms.Fill("MchTauCh", recTau.charge);
@@ -203,8 +203,8 @@ void LeptonsAnalysis(const char *inputFile)
     }
 
     for(Int_t i = 0; i < std::min(NPTPlots, mchTaus.size()); i++) {
-      Tau &visTau = mchTaus[i].first;
-      Tau &recTau = mchTaus[i].second;
+      TauLepton &visTau = mchTaus[i].first;
+      TauLepton &recTau = mchTaus[i].second;
       cout << &visTau << &recTau << endl;
       if(visTau.charge == recTau.charge) {
 	string histName = "MchTau" + std::to_string(i)  + std::string("PT");

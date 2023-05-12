@@ -22,7 +22,7 @@ R__LOAD_LIBRARY(libDelphes)
 #include <string>
 #include "TLorentzVector.h"
 #include "Histograms.h"
-#include "Tau.h"
+#include "TauLepton.h"
 
 using namespace std;
 
@@ -87,10 +87,10 @@ void tauMaker(const char *inputFile)
   histograms.Define("WrgEtaRes", "Wrongly matched tau reco vs vis Eta resolution", 100, -1.0, 1.0);
   histograms.Define("WrgPhiRes", "Wrongly matched tau reco vs vis Phi resolution", 100, -1.0, 1.0);
 
-  vector<Tau> genTaus;
-  vector<Tau> visTaus;
-  vector<Tau> recTaus;
-  vector< pair<Tau, Tau> > mchTaus;
+  vector<TauLepton> genTaus;
+  vector<TauLepton> visTaus;
+  vector<TauLepton> recTaus;
+  vector< pair<TauLepton, TauLepton> > mchTaus;
 
   cout << "Number of entries = " << numberOfEntries << endl;
 
@@ -117,7 +117,7 @@ void tauMaker(const char *inputFile)
     
     if (makeRecTaus(branchEFTracks, branchEFPhotons, branchEFNHadrons, recTaus)) {
       for (int r = 0; r < recTaus.size(); r++) {
-	Tau &recTau = recTaus[r];
+	TauLepton &recTau = recTaus[r];
 	double deltaR = recTau.P4.DeltaR(recTau.MaxTrackP4);
 	histograms.Fill("DeltaR", deltaR);
 	histograms.Fill("RecTauMxTrkPT", recTau.MaxTrackP4.Pt());
@@ -134,8 +134,8 @@ void tauMaker(const char *inputFile)
     // Matched taus - these should be there if the algorithm is any good
     if (makeMchTaus(visTaus, recTaus, mchTaus)) {
       for (int m = 0; m < mchTaus.size(); m++) {
-	Tau &visTau = mchTaus[m].first;
-	Tau &recTau = mchTaus[m].second;
+	TauLepton &visTau = mchTaus[m].first;
+	TauLepton &recTau = mchTaus[m].second;
 	if(visTau.charge == recTau.charge) {
 	  histograms.Fill("MchTauPT", visTau.P4.Pt());
 	  histograms.Fill("MchTauCh", recTau.charge);
