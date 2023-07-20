@@ -167,7 +167,7 @@ bool makeRecTaus(TClonesArray* branchEFTracks, TClonesArray* branchEFPhotons, TC
       }
       // Add in photons (mostly from pizero decays) if within 0.3, and for isolation if between 0.3-0.5
       int nPhotons = 0;
-      for (Int_t a = t + 1; a < branchEFPhotons->GetEntries(); ++a) {
+      for (Int_t a = 0; a < branchEFPhotons->GetEntries(); ++a) {
 	Tower *fragment = (Tower*) branchEFPhotons->At(a);
 	fragmentP4.SetPtEtaPhiM(fragment->ET, fragment->Eta, fragment->Phi, 0.);
 	double deltaR = recoTau.DeltaR(fragmentP4);
@@ -183,7 +183,7 @@ bool makeRecTaus(TClonesArray* branchEFTracks, TClonesArray* branchEFPhotons, TC
       }
       // Consider non-pizero remnant neutral hadrons only for isolation
       int nNHadrons = 0;
-      for (Int_t a = t + 1; a < branchEFNHadrons->GetEntries(); ++a) {
+      for (Int_t a = 0; a < branchEFNHadrons->GetEntries(); ++a) {
 	Tower *fragment = (Tower*) branchEFNHadrons->At(a);
 	fragmentP4.SetPtEtaPhiM(fragment->ET, fragment->Eta, fragment->Phi, 0.);
 	double deltaR = recoTau.DeltaR(fragmentP4);
