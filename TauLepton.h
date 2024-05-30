@@ -208,6 +208,100 @@ bool makeRecTaus(TClonesArray* branchEFTracks, TClonesArray* branchEFPhotons, TC
   return true;
 }
 
+bool makeRecTausPhotonSeeded(TClonesArray* branchEFTracks, TClonesArray* branchEFPhotons, TClonesArray* branchEFNHadrons, vector<TauLepton> &recTaus, bool clearRecTaus=false) {
+  // Reconstruct taus using EFlow tracks, photons and neutral hadrons
+  // Consider every charged track above 5 GeV PT - label at as a potential tau remnant
+  // Add in all tracks and clusters within 0.3 of the track
+  // Compute sum charge of the tracks
+  // Count the number of charged tracks
+  // Calculate mass of the tracks
+  // Compute isolation as the sum of tracks and clusters in DeltaR = 0.3-0.5 range
+  if (clearRecTaus) recTaus.clear();
+  TLorentzVector recoTau;
+  TLorentzVector fragmentP4;
+  int nPhotons = 0;
+  for (Int_t p = 0; p < branchEFPhotons->GetEntries(); ++p) {
+    Tower *thePhoton = (Tower*) branchEFPhotons->At(p);
+    if (thePhoton->PT > 5.0) {
+      bool selected = true;
+      recoTau.SetPtEtaPhiM(thePhoton->PT, thePhoton->Eta, thePhoton->Phi, 0.0);
+      double isolation = 0;
+      int charge = 0;
+      int nProngs = 0;
+      // if (entry < 10) cout << "Max: EFTrack[" << t << "] = (" << track->PT << ", " << track->Eta << ", " << track->Phi << ", " << track->Mass << ")";
+      for (Int_t a = 0; a < branchEFTracks->GetEntries(); ++a) {
+	Track *fragment = (Track*) branchEFTracks->At(a);
+	fragmentP4.SetPtEtaPhiM(fragment->PT, fragment->Eta, fragment->Phi, fragment->Mass);
+	double deltaR = recoTau.DeltaR(fragmentP4);
+	if(deltaR < 0.5) {
+	  if (fragment->PT > thePhoton->PT) {
+	    // if (entry < 10) cout << " - Deselected" << endl;
+	    selected = false;
+	    break;
+	  }
+	  else {
+	    if (deltaR < 0.3) {
+	      recoTau += fragmentP4;
+	      // if (entry < 10) cout << endl << "Frg: EFTrack[" << a << "] = (" << fragment->PT << ", " << fragment->Eta << ", " << fragment->Phi << ", " << fragment->Mass << ")";
+	      charge += fragment->Charge;
+	      nProngs += 1;
+	    }
+	    else {
+	      isolation += fragment->PT;
+	    }
+	  }
+	}
+	for (Int_t a = 0; a < branchEFPhotons->GetEntries(); ++a) {
+	  if (a != p) {
+	    Tower *fragment = (Tower*) branchEFPhotons->At(a);
+	    fragmentP4.SetPtEtaPhiM(fragment->ET, fragment->Eta, fragment->Phi, 0.);
+	    if (fragment->PT > thePhoton->PT) {
+	      // if (entry < 10) cout << " - Deselected" << endl;
+	      selected = false;
+	      break;
+	    }
+	    else {
+	      double deltaR = recoTau.DeltaR(fragmentP4);
+	      if(deltaR < 0.5) {
+		if (deltaR < 0.3) {
+		  recoTau += fragmentP4;
+		  nPhotons++;
+		}
+		else {
+		  isolation += fragment->ET;
+		}
+	      }
+	    }
+	  }
+	}
+      }
+      // Consider non-pizero remnant neutral hadrons only for isolation
+      int nNHadrons = 0;
+      for (Int_t a = 0; a < branchEFNHadrons->GetEntries(); ++a) {
+	Tower *fragment = (Tower*) branchEFNHadrons->At(a);
+	fragmentP4.SetPtEtaPhiM(fragment->ET, fragment->Eta, fragment->Phi, 0.);
+	double deltaR = recoTau.DeltaR(fragmentP4);
+	if(deltaR < 0.5) {
+	  if (deltaR < 0.3) {
+	    recoTau += fragmentP4;
+	    nNHadrons++;
+	  }
+	  else {
+	    isolation += fragment->ET;
+	  }
+	}
+      }
+      if (selected) {
+	// if (entry < 10) cout << endl << "SelRecoTau = (" << recoTau.Pt() << ", " << recoTau.Eta() << ", " << recoTau.Phi() << ", "<< recoTau.M() << ")" << endl;
+	if (nProngs <= 5) {
+	  recTaus.push_back(TauLepton(recoTau, track->P4(), charge, nProngs, nPhotons, nNHadrons, isolation));
+	}
+      } // Selected objects
+    } // Those above 5 GeV
+  } // All tracks
+  return true;
+}
+
 bool makeMchTaus(vector<TauLepton> &visTaus, vector<TauLepton> &recTaus, vector< pair<TauLepton, TauLepton> > &mchTaus) {
   mchTaus.clear();
   for (Int_t v = 0; v < visTaus.size(); v++) {

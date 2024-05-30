@@ -116,18 +116,20 @@ void tauMaker(const char *inputFile)
     // Reconstructed taus - these could be there even if there are no real taus in the event
     
     if (makeRecTaus(branchEFTracks, branchEFPhotons, branchEFNHadrons, recTaus)) {
-      for (int r = 0; r < recTaus.size(); r++) {
-	TauLepton &recTau = recTaus[r];
-	double deltaR = recTau.P4.DeltaR(recTau.MaxTrackP4);
-	histograms.Fill("DeltaR", deltaR);
-	histograms.Fill("RecTauMxTrkPT", recTau.MaxTrackP4.Pt());
-	histograms.Fill("RecTauPT", recTau.P4.Pt());
-	histograms.Fill("RecTauNP", recTau.nProngs);
-	histograms.Fill("RecTauNG", recTau.nPhotons);
-	histograms.Fill("RecTauNN", recTau.nNHadrons);
-	histograms.Fill("RecTauIR", recTau.isolation / recTau.P4.Pt());
-	histograms.Fill("RecTauCh", recTau.charge);
-	histograms.Fill("RecTauMs", recTau.P4.M());
+      if (makeRecTausPhotonSeeded(branchEFTracks, branchEFPhotons, branchEFNHadrons, recTaus)) {
+	for (int r = 0; r < recTaus.size(); r++) {
+	  TauLepton &recTau = recTaus[r];
+	  double deltaR = recTau.P4.DeltaR(recTau.MaxTrackP4);
+	  histograms.Fill("DeltaR", deltaR);
+	  histograms.Fill("RecTauMxTrkPT", recTau.MaxTrackP4.Pt());
+	  histograms.Fill("RecTauPT", recTau.P4.Pt());
+	  histograms.Fill("RecTauNP", recTau.nProngs);
+	  histograms.Fill("RecTauNG", recTau.nPhotons);
+	  histograms.Fill("RecTauNN", recTau.nNHadrons);
+	  histograms.Fill("RecTauIR", recTau.isolation / recTau.P4.Pt());
+	  histograms.Fill("RecTauCh", recTau.charge);
+	  histograms.Fill("RecTauMs", recTau.P4.M());
+	}
       }
     }
     
