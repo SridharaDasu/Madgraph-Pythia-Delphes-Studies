@@ -15,7 +15,7 @@
 
 R__LOAD_LIBRARY(libDelphes)
 #include "classes/DelphesClasses.h"
-#include "external/ExRootAnalysis/ExRootTreeReader.h"
+#include "ExRootAnalysis/ExRootTreeReader.h"
 #include <string.h>
 #include <map>
 #include <vector>

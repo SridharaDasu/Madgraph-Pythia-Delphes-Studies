@@ -220,11 +220,12 @@ bool makeRecTausPhotonSeeded(TClonesArray* branchEFTracks, TClonesArray* branchE
   TLorentzVector recoTau;
   TLorentzVector fragmentP4;
   int nPhotons = 0;
+  Track *theTrack = 0;
   for (Int_t p = 0; p < branchEFPhotons->GetEntries(); ++p) {
     Tower *thePhoton = (Tower*) branchEFPhotons->At(p);
-    if (thePhoton->PT > 5.0) {
+    if (thePhoton->ET > 5.0) {
       bool selected = true;
-      recoTau.SetPtEtaPhiM(thePhoton->PT, thePhoton->Eta, thePhoton->Phi, 0.0);
+      recoTau.SetPtEtaPhiM(thePhoton->ET, thePhoton->Eta, thePhoton->Phi, 0.0);
       double isolation = 0;
       int charge = 0;
       int nProngs = 0;
@@ -234,7 +235,7 @@ bool makeRecTausPhotonSeeded(TClonesArray* branchEFTracks, TClonesArray* branchE
 	fragmentP4.SetPtEtaPhiM(fragment->PT, fragment->Eta, fragment->Phi, fragment->Mass);
 	double deltaR = recoTau.DeltaR(fragmentP4);
 	if(deltaR < 0.5) {
-	  if (fragment->PT > thePhoton->PT) {
+	  if (fragment->PT > thePhoton->ET) {
 	    // if (entry < 10) cout << " - Deselected" << endl;
 	    selected = false;
 	    break;
@@ -245,6 +246,9 @@ bool makeRecTausPhotonSeeded(TClonesArray* branchEFTracks, TClonesArray* branchE
 	      // if (entry < 10) cout << endl << "Frg: EFTrack[" << a << "] = (" << fragment->PT << ", " << fragment->Eta << ", " << fragment->Phi << ", " << fragment->Mass << ")";
 	      charge += fragment->Charge;
 	      nProngs += 1;
+	      if (theTrack == 0 || fragment->PT > theTrack->PT) {
+		theTrack = fragment;
+	      }
 	    }
 	    else {
 	      isolation += fragment->PT;
@@ -255,7 +259,7 @@ bool makeRecTausPhotonSeeded(TClonesArray* branchEFTracks, TClonesArray* branchE
 	  if (a != p) {
 	    Tower *fragment = (Tower*) branchEFPhotons->At(a);
 	    fragmentP4.SetPtEtaPhiM(fragment->ET, fragment->Eta, fragment->Phi, 0.);
-	    if (fragment->PT > thePhoton->PT) {
+	    if (fragment->ET > thePhoton->ET) {
 	      // if (entry < 10) cout << " - Deselected" << endl;
 	      selected = false;
 	      break;
@@ -293,8 +297,11 @@ bool makeRecTausPhotonSeeded(TClonesArray* branchEFTracks, TClonesArray* branchE
       }
       if (selected) {
 	// if (entry < 10) cout << endl << "SelRecoTau = (" << recoTau.Pt() << ", " << recoTau.Eta() << ", " << recoTau.Phi() << ", "<< recoTau.M() << ")" << endl;
-	if (nProngs <= 5) {
-	  recTaus.push_back(TauLepton(recoTau, track->P4(), charge, nProngs, nPhotons, nNHadrons, isolation));
+	if (nProngs == 0) {
+	  recTaus.push_back(TauLepton(recoTau, TLorentzVector(), charge, nProngs, nPhotons, nNHadrons, isolation));
+	}
+	else if (nProngs <= 5) {
+	  recTaus.push_back(TauLepton(recoTau, theTrack->P4(), charge, nProngs, nPhotons, nNHadrons, isolation));
 	}
       } // Selected objects
     } // Those above 5 GeV
