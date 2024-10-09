@@ -5,6 +5,7 @@ generate e+ e- > f f~
 output e+e-madgraph5-pythia-test
 launch
 shower=Pythia8
+detector=Delphes
 set ebeam1 125.
 set ebeam2 125.
 set nevents 1000
