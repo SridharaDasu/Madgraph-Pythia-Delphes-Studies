@@ -2,7 +2,9 @@
 if [ -d '/cvmfs' ]; then
     if [[ `uname -r` == *"el9"* ]]; then
 	source /cvmfs/sft.cern.ch/lcg/views/LCG_104b/x86_64-el9-gcc13-opt/setup.sh
+	unset PYTHIA8DATA PYTHIA8
 	export mg5dir=/nfs_scratch/dasu/2024-10/MG5_aMC_v3_5_6/
+	source $mg5dir/Delphes/DelphesEnv.sh
     else
 	echo "Currently Dasu is only supporting only el9 version on UW cluster"
 	exit
