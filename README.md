@@ -17,7 +17,7 @@ The inputs are madgraph, pythia8 and Delphes control files for the signal root f
 export basedir=/nfs_scratch/$USER/2024-10
 mkdir -p $basedir
 cd $basedir
-git clone git@github.com:SridharaDasu/Madgraph-Pythia-Delphes-Studies.git
+git clone https://github.com/SridharaDasu/Madgraph-Pythia-Delphes-Studies.git
 ```
 
 ### Creation of test data (On first login only):
@@ -86,7 +86,7 @@ you can then install this package:
 ```
 export basedir=<a directory on your machine>
 mkdir -p $basedir
-git clone git@github.com:SridharaDasu/Madgraph-Pythia-Delphes-Studies.git
+git clone https://github.com/SridharaDasu/Madgraph-Pythia-Delphes-Studies.git
 ```
 
 you can then test your setup using:
